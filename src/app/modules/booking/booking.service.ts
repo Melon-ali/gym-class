@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import ApiError from '../../errors/ApiError';
 import { ScheduleService } from '../schedule/schedules.service';
@@ -9,8 +10,8 @@ import { IPaginationOptions } from '../../interface/pagination';
 import Booking from './booking.model';
 
 // Create a booking
-const createOne = async (data: IBooking): Promise<IBooking> => {
-  const isScheduleExists = await ScheduleService.getOne(data?.scheduleId);
+const createOne = async (data: IBooking): Promise<IBooking | null | any> => {
+  const isScheduleExists = await ScheduleService.getOne(data?.scheduleId as string);
   if (!isScheduleExists) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Schedule not found');
   }
@@ -37,7 +38,7 @@ const createOne = async (data: IBooking): Promise<IBooking> => {
   }
 
   const result = await Booking.create(data); // Create booking document in MongoDB
-  return result.toObject() as IBooking; // ✅ Ensure correct type
+  return result
 };
 
 
@@ -46,7 +47,7 @@ const createOne = async (data: IBooking): Promise<IBooking> => {
 const getAll = async (
   filters: IBookingFilterRequest,
   options: IPaginationOptions
-): Promise<IGenericResponse<IBooking[]>> => {
+): Promise<IGenericResponse<IBooking[] | any>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
 
   const filterConditions = SearchingFilteringHelper.searchingFiltering({
@@ -72,7 +73,7 @@ const getAll = async (
 };
 
 // Get a single booking by ID
-const getOne = async (id: string): Promise<IBooking | null> => {
+const getOne = async (id: string): Promise<IBooking | null | any> => {
   const result = await Booking.findById(id).lean(); // Fetch booking by ID using Mongoose
   if (!result) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
@@ -81,7 +82,7 @@ const getOne = async (id: string): Promise<IBooking | null> => {
 };
 
 // Update a booking by ID
-const updateOne = async (id: string, payload: Partial<IBooking>): Promise<IBooking> => {
+const updateOne = async (id: string, payload: Partial<IBooking>): Promise<IBooking | any> => {
   const result = await Booking.findByIdAndUpdate(id, payload, { new: true }); // Update booking using Mongoose
   if (!result) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
@@ -90,7 +91,7 @@ const updateOne = async (id: string, payload: Partial<IBooking>): Promise<IBooki
 };
 
 // Delete a booking by ID
-const deleteOne = async (id: string): Promise<IBooking> => {
+const deleteOne = async (id: string): Promise<IBooking | any> => {
   const result = await Booking.findByIdAndDelete(id); // Delete booking by ID using Mongoose
   if (!result) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');

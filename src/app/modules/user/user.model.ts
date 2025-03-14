@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, {  Schema } from 'mongoose';
 import { ENUM_USER_ROLE } from '../../enums/user';
 import IUser from './user.interface';
 

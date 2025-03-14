@@ -9,10 +9,10 @@ export type IBookingFilterRequest = {
 import { ObjectId } from 'mongoose';
 
 export type IBooking = {
-  _id?: Types.ObjectId // Optional, since Mongoose will auto-generate this
+  _id?: Types.ObjectId | string // Optional, since Mongoose will auto-generate this
   __v: number;
-  scheduleId: ObjectId;
-  traineeId: ObjectId;
+  scheduleId: ObjectId | string;
+  traineeId: ObjectId | string;
   isCancelled: boolean;
   // other properties of IBooking
 }

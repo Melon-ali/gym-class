@@ -7,7 +7,7 @@
     "index.d.ts"
   ], // which files to compile
   "exclude": ["node_modules"], // which files to skip
-  "files": ["./src/interfaces/index.d.ts"],
+  // "files": ["./src/interfaces/index.d.ts"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
